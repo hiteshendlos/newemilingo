@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import ChatGpt from "./utility/chatGpt";
-import googleCalendar from "./utility/googleCalendar";
+import ChatGpt from "../utility/chatGpt";
+import googleCalendar from "../utility/googleCalendar";
 const Imap = require("imap");
 
 const util = require("util");
