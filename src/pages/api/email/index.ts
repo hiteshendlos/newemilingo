@@ -14,6 +14,8 @@ type DataType = {
   error?:any;
 };
 
+
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<DataType>) {
 
 
@@ -36,10 +38,7 @@ try {
     password: "Testemail@12345",
     host: "endlos.cloud",
     port: 143,
-    // tls: true,
-    // tlsOptions: {
-    //   rejectUnauthorized: false,
-    // },
+
   });
 
   const emailArray: {}[] = [];
@@ -90,13 +89,50 @@ try {
 
 
                 
-// console.log(emailArray[0].TextBody);
-
+//Finding the Due date and other things from email 
                    
 
-                   console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
+                  //  console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
+                   const  ChatGptResponse = await ChatGpt(`Find due Amount And Duedate in it and result  give me in key value pair or object  ? ${emailArray[emailArray.length-1]?.TextBody}`);
 
-googleCalendar("hello")
+                   console.log(ChatGptResponse)
+
+                   console.log(JSON.parse(ChatGptResponse));
+                   console.log(typeof JSON.parse(ChatGptResponse));
+
+                   let object = JSON.parse(ChatGptResponse)
+                   console.log(object["Due Date"]);
+                   console.log(object["Amount Due"]);
+                   console.log(ChatGptResponse.Duedate);
+                   console.log(typeof ChatGptResponse)
+
+
+
+
+                   const dueDate = new Date( object["Due Date"]);
+
+                   const EventInfomation = {
+                     Summary: "Hitesh Endlos Event Generation Automation",
+                     DueAmount: object["Amount Due"],
+                    // DueDate: object["Due Date"],
+                    DueDate: dueDate.toISOString(),
+                  
+                   };
+
+
+                     const ChatGptResponse2 = await ChatGpt(
+                       `convert the duedate in iso  date formet formet and return the same object in the same form   ? ${EventInfomation.DueDate}`
+                     );
+                   console.log({ ChatGptResponse2 });
+
+
+
+                 
+
+                //setting event to the google calender
+                   
+
+                  googleCalendar(EventInfomation)
 
 
                 // All emails are parsed, send the array as a response

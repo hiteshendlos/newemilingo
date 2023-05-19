@@ -188,135 +188,95 @@ const { google } = require("googleapis");
 // }
 
 
+type EventInformation = {
+  Summary: string;
+  DueAmount: string;
+  DueDate: string;
+};
 
 
 
 
 
-
-export default async function googleCalendar(query: any) {
+export default async function googleCalendar(EventInfomation: EventInformation) {
   try {
     // Load the stored access token and refresh token
 
-
-
-    const clientId="846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com"
-    const storedAccessToken =
-      "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFiYjI2MzY4YTNkMWExNDg1YmNhNTJiNGY4M2JkYjQ5YjY0ZWM2MmYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSGl0ZXNoIEt1bWFyIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FHTm15eFpFNFhObTVjaFRMVjRsM0NCZFhBS1JfWWxNLW9ZLXI1LVJ2STlMPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2VuZGxvcy1lbWFpbC00MWNhNyIsImF1ZCI6ImVuZGxvcy1lbWFpbC00MWNhNyIsImF1dGhfdGltZSI6MTY4NDMyNDM5NSwidXNlcl9pZCI6ImVqTEUwOGtSeE9SOXE4SXVBN0R5NUk2blRvWjIiLCJzdWIiOiJlakxFMDhrUnhPUjlxOEl1QTdEeTVJNm5Ub1oyIiwiaWF0IjoxNjg0MzI0Mzk1LCJleHAiOjE2ODQzMjc5OTUsImVtYWlsIjoiaGl0ZXNoLmVuZGxvc0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzkyODI1NDU0OTQxMzQ5OTQ4MiJdLCJlbWFpbCI6WyJoaXRlc2guZW5kbG9zQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.uwwvFkQx4Sdz9ZJAKGl70Nf2KXUFDFs4zLQBazpOgyeW979Rc2dC_c1jtwzMqD-oMPPQfr0B07QXRq3YYqSUBNMajszAfdggykq9T1c_1Gq-SZiJMid6Nl7zc3CJZX97hHjGE0zkND13uSBBAMTuJqiZgWvCl_a9FTHJSMvpIDaiU-abXyJMHHf_FM8jcVSi-XfiRXEYuIZVGSPWd0ri18Nc5gd__djJm4zvfEC5eInO9dbK08CLavWuknzeW63sMGF1Ej9rkJSIk6ELAqTnR9Xogsk-SJNv6bIAkxmQDhPH3eHzVJLu2FSH-rR2ygsuGtU-sy-5FyO711eAEemLLw"; 
-      
-       const access_token =
-         "ya29.a0AWY7Ckkd1rhHKHwGBcCshKFAqBpm-GRywG72Bi0lVY_j5I9M_xkoCK3GxHsthICL5oUbwkqx8MNcuFCrOTs6qxG4bS11Hac1hjF5bGfgrgRKVXGJ3f8QpzJb04UkwLkOW4tg8TpkV44XtGM4wfgFSizAB9lkaCgYKAWwSARMSFQG1tDrpzkWWSJgdRQ8NxScbC3HajQ0163";
-      //  / Replace with the stored access token
+    const clientId = "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com";
+    const access_token ="ya29.a0AWY7CkkZpyTFQ8_dHGBq4kWTMwoejzqMkJ6zm6_Es7pXE0FdHBAjyNdaIdqZg6Jeen3BDLK7i6gJPut0glIIKOrUUSnBRw4rvfC6cC5lG66bE6akrXyTV35xmurYCea8-Y81QXCVJjhWaIHqUaKmOkcSi3VgaCgYKAcISARMSFQG1tDrp_c50KXv4qGAATu4gYW95Ag0163";
+    //  / Replace with the stored access token
     // Create a new instance of the OAuth2 client
     const oauth2Client = new google.auth.OAuth2();
     oauth2Client.setCredentials({
       access_token: access_token,
-      clientId
+      clientId,
     });
 
     // Create an instance of the Google Calendar API
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
-
-
-    // const event = {
-    //   summary: "Event Title",
-    //   start: {
-    //     dateTime: "2023-05-18T10:00:00",
-    //     timeZone: "America/New_York",
-    //   },
-    //   end: {
-    //     dateTime: "2023-05-18T10:00:00",
-    //     timeZone: "America/New_York",
-    //   },
-    //   description: "This is a test event.",
-    // };
-
     // const event = {
     //   summary: "Hitesh Event Setting",
     //   start: {
-    //     dateTime: "2023-05-18T18:00:00+05:30",
+    //     dateTime: "2023-05-18T16:30:00+05:30",
     //     timeZone: "Asia/Kolkata",
     //   },
     //   end: {
-    //     dateTime: "2023-05-18T18:00:00+05:30",
+    //     dateTime: "2023-05-18T17:30:00+05:30",
     //     timeZone: "Asia/Kolkata",
     //   },
     //   description: "This is a test event. BY CODE",
     // };
 
-
     const event = {
-      summary: "Hitesh Event Setting",
+      summary: EventInfomation?.Summary ? EventInfomation?.Summary : "Hitesh Event Setting",
       start: {
-        dateTime: "2023-05-18T16:30:00+05:30",
+        dateTime: EventInfomation.DueDate,
         timeZone: "Asia/Kolkata",
       },
       end: {
-        dateTime: "2023-05-18T17:30:00+05:30",
+        dateTime: EventInfomation.DueDate,
         timeZone: "Asia/Kolkata",
       },
-      description: "This is a test event. BY CODE",
+      description: "This is a test event. BY CODE Hitesh",
+      location: "india",
+      colorId: "7",
     };
 
+    // API request to fetch events within the time range
+   // Make API request to retrieve the list of calendars
+    const response = await calendar.calendarList.list()
 
+    // console.log({calendarlist:response});
+    console.log({calendarlist:response.data.items});
+    // calendar.events.insert(
+    //   {
+    //     calendarId: "primary",
+    //     requestBody: event,
+    //     //  requestBody: {
 
-    // const event = {
-    //   summary: "Event Title",
-    //   start: {
-    //     dateTime:
-    //       new Date().toLocaleDateString("en-US", {
-    //         timeZone: "Asia/Kolkata",
-    //         year: "numeric",
-    //         month: "2-digit",
-    //         day: "2-digit",
-    //       }) + "T18:00:00",
-    //     timeZone: "Asia/Kolkata",
+    //     //    summary: "Hitesh Event Setting",
+    //     //    start: {
+    //     //      dateTime: "2023-05-18T16:30:00+05:30",
+    //     //      timeZone: "Asia/Kolkata",
+    //     //    },
+    //     //    end: {
+    //     //      dateTime: "2023-05-18T17:30:00+05:30",
+    //     //      timeZone: "Asia/Kolkata",
+    //     //    },
+    //     //    location:"india",
+    //     //    description: "This is a test event. BY CODE",
+    //     //    colorId:"7"
+    //     //  },
     //   },
-    //   end: {
-    //     dateTime:
-    //       new Date().toLocaleDateString("en-US", {
-    //         timeZone: "Asia/Kolkata",
-    //         year: "numeric",
-    //         month: "2-digit",
-    //         day: "2-digit",
-    //       }) + "T18:00:00",
-    //     timeZone: "Asia/Kolkata",
-    //   },
-    //   description: "This is a test event.",
-    // };
-
-
- calendar.events.insert(
-   {
-     calendarId: "primary",
-     //  resource: event,
-     requestBody: {
-   
-       summary: "Hitesh Event Setting",
-       start: {
-         dateTime: "2023-05-18T16:30:00+05:30",
-         timeZone: "Asia/Kolkata",
-       },
-       end: {
-         dateTime: "2023-05-18T17:30:00+05:30",
-         timeZone: "Asia/Kolkata",
-       },
-       location:"india",
-       description: "This is a test event. BY CODE",
-       colorId:"7"
-     },
-   },
-   (err: any, res: any) => {
-     if (err) {
-       console.error("Error creating event:", err);
-       return;
-     }
-     console.log("Event created:", res.data.htmlLink);
-   }
- );
-
-  
+    //   (err: any, res: any) => {
+    //     if (err) {
+    //       console.error("Error creating event:", err);
+    //       return;
+    //     }
+    //     console.log("Event created:", res.data.htmlLink);
+    //   }
+    // );
   } catch (error) {
     console.error("Error:", error);
   }

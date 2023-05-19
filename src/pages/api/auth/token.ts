@@ -1,5 +1,6 @@
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { useCookies } from "react-cookie";
 
 
 
@@ -25,10 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 
     const {token} =req.body;
-
-
-    console.log({token});
-    const config = {
+const config = {
       clientId: "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com",
       clientSecret: "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",
       // scopes: ["openid", "email", "profile", "https://www.googleapis.com/auth/calendar"],
@@ -44,9 +42,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     // const { tokens } = await oAuth2Client.getToken("4/0AbUR2VOx5du6Inf4WISXSxzOYiP1NFqB4ljUbbyLEQndwTutxX4yozb4tKFA9i5bx1y-EQ"); // exchange code for tokens
     const { tokens } = await oAuth2Client.getToken(token); // 
 
+
+
+    console.log({tokens});
+
     res.status(200).json({
      status:true, 
-      token:tokens });
+      token:tokens
+     });
   } catch (error) {
     res.status(401).json({ status:false,error: error });
   }

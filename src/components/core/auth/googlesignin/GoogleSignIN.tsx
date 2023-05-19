@@ -1,7 +1,76 @@
 import { GoogleLogin, GoogleOAuthProvider, hasGrantedAllScopesGoogle, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 function MyComponent() {
+
+
+
+const [cookies, setCookies, removeCookie] = useCookies(["auth"]);
+
   const onSuccess = (codeResponse:any) => {
-    console.log(codeResponse);
+    console.log({codeResponse});
+
+
+
+
+
+
+
+
+let data = JSON.stringify({
+  token: codeResponse.code,
+});
+
+let config = {
+  method: "post",
+  maxBodyLength: Infinity,
+  url: "/api/auth/token",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: data,
+};
+
+const response  = axios
+  .request(config)
+  .then((response) => {
+
+
+
+if (response.data.result !== -1) {
+
+
+  console.log({response})
+
+  console.log(response?.data?.token?.access_token);
+  // setCookies("access_token", response?.data?.token?.access_token);
+//    setCookies("damm", "newName", {
+//   path: "/",
+//   domain: "localhost"
+// });
+  
+
+  setCookies("auth", response?.data);
+
+  console.log({ cookies });
+
+}
+
+
+
+    return response.data
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+
+
+
+
+
+
   };
 
   const login = useGoogleLogin({
