@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 
 try {
+
   // const imap = new Imap({
   //   user: "hitesh.endlos@gmail.com",
   //   password: "Allinone@12",
@@ -31,6 +32,8 @@ try {
   //     rejectUnauthorized: false,
   //   },
   // });
+
+
 
   // imap creditiantials for connection
   const imap = new Imap({
@@ -92,38 +95,59 @@ try {
 //Finding the Due date and other things from email 
                    
 
+
                   //  console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
-                   const  ChatGptResponse = await ChatGpt(`Find due Amount And Duedate in it and result  give me in key value pair or object  ? ${emailArray[emailArray.length-1]?.TextBody}`);
+                   const  ChatGptResponse = await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name", 
+                  "Event Date" and "Amount" ${emailArray[emailArray.length-1]?.TextBody}`);
 
                    console.log(ChatGptResponse)
 
-                   console.log(JSON.parse(ChatGptResponse));
-                   console.log(typeof JSON.parse(ChatGptResponse));
 
-                   let object = JSON.parse(ChatGptResponse)
-                   console.log(object["Due Date"]);
-                   console.log(object["Amount Due"]);
-                   console.log(ChatGptResponse.Duedate);
-                   console.log(typeof ChatGptResponse)
+
+ 
 
 
 
+                  //  console.log(JSON.parse(ChatGptResponse));
+                  //  console.log(typeof JSON.parse(ChatGptResponse));
 
-                   const dueDate = new Date( object["Due Date"]);
+                  //  let myobject = JSON.parse(ChatGptResponse)
 
-                   const EventInfomation = {
-                     Summary: "Hitesh Endlos Event Generation Automation",
-                     DueAmount: object["Amount Due"],
-                    // DueDate: object["Due Date"],
-                    DueDate: dueDate.toISOString(),
-                  
-                   };
+                  //  const keys = Object.keys(myobject);
 
 
-                     const ChatGptResponse2 = await ChatGpt(
-                       `convert the duedate in iso  date formet formet and return the same object in the same form   ? ${EventInfomation.DueDate}`
-                     );
-                   console.log({ ChatGptResponse2 });
+                  //  console.log({ data:myobject[keys[0]] });
+
+                  //  console.log(object);
+                  //  console.log(object["Due Date"]);
+                  //  console.log(object["Amount Due"]);
+                  //  console.log(ChatGptResponse.Duedate);
+                  //  console.log(typeof ChatGptResponse)
+
+
+
+
+                  //  const dueDate = new Date( object["Due Date"]);
+                  //  const dueDate = new Date(myobject[keys[0]]);
+
+                  //  console.log({ dueDate });
+                  //  console.log({ dueDateConverte: dueDate.toISOString() });
+
+                  // //  console.log({dueDate});
+
+                  //  const EventInfomation = {
+                  //    Summary: "Hitesh Endlos Event Generation Automation",
+                  //    //  Summary: emailArray[emailArray.length - 1]?.Subject,
+                  //    DueAmount: myobject[keys[1]],
+                  //    // DueDate: object["Due Date"],
+                  //    DueDate: dueDate.toISOString(),
+                  //  };
+
+
+                  //    const ChatGptResponse2 = await ChatGpt(
+                  //      `convert the duedate in iso  date formet formet and return the same object in the same form   ? ${EventInfomation.DueDate}`
+                  //    );
+                  //  console.log({ ChatGptResponse2 });
 
 
 
@@ -132,7 +156,7 @@ try {
                 //setting event to the google calender
                    
 
-                  googleCalendar(EventInfomation)
+                  // googleCalendar(EventInfomation)
 
 
                 // All emails are parsed, send the array as a response
@@ -145,6 +169,8 @@ try {
             }
           });
         });
+
+        
 
         fetch.once("error", function (err: any) {
           console.error(err);

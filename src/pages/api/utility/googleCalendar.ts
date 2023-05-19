@@ -203,7 +203,8 @@ export default async function googleCalendar(EventInfomation: EventInformation) 
     // Load the stored access token and refresh token
 
     const clientId = "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com";
-    const access_token ="ya29.a0AWY7CkkZpyTFQ8_dHGBq4kWTMwoejzqMkJ6zm6_Es7pXE0FdHBAjyNdaIdqZg6Jeen3BDLK7i6gJPut0glIIKOrUUSnBRw4rvfC6cC5lG66bE6akrXyTV35xmurYCea8-Y81QXCVJjhWaIHqUaKmOkcSi3VgaCgYKAcISARMSFQG1tDrp_c50KXv4qGAATu4gYW95Ag0163";
+    const access_token =
+      "ya29.a0AWY7CkmyuuyHC7sDCZ9uEEAHUKuWqtxxupMmd7-4AXNEmUQ__dtR2PQQU9lL-qutEH1SUpOsNltaJgk3D5OJL2fsoMAyN5tGk_e-b9q8ZfGgPPUPfBPtD6R4b4O693_nqwKUqABgWrWppHB-pI7ZQAH_fl4DaCgYKAb8SARMSFQG1tDrpF23n1muomzhnluactYlurw0163";
     //  / Replace with the stored access token
     // Create a new instance of the OAuth2 client
     const oauth2Client = new google.auth.OAuth2();
@@ -238,45 +239,51 @@ export default async function googleCalendar(EventInfomation: EventInformation) 
         dateTime: EventInfomation.DueDate,
         timeZone: "Asia/Kolkata",
       },
-      description: "This is a test event. BY CODE Hitesh",
+      description:`Your Amount due ${EventInfomation.DueAmount}`,
       location: "india",
       colorId: "7",
     };
 
-    // API request to fetch events within the time range
-   // Make API request to retrieve the list of calendars
-    const response = await calendar.calendarList.list()
+  //   // API request to fetch events within the time range
+  //  // Make API request to retrieve the list of calendars
+  //   const response = await calendar.calendarList.list()
 
-    // console.log({calendarlist:response});
-    console.log({calendarlist:response.data.items});
-    // calendar.events.insert(
-    //   {
-    //     calendarId: "primary",
-    //     requestBody: event,
-    //     //  requestBody: {
+  //   // console.log({calendarlist:response});
+  //   console.log({calendarlist:response.data.items});
 
-    //     //    summary: "Hitesh Event Setting",
-    //     //    start: {
-    //     //      dateTime: "2023-05-18T16:30:00+05:30",
-    //     //      timeZone: "Asia/Kolkata",
-    //     //    },
-    //     //    end: {
-    //     //      dateTime: "2023-05-18T17:30:00+05:30",
-    //     //      timeZone: "Asia/Kolkata",
-    //     //    },
-    //     //    location:"india",
-    //     //    description: "This is a test event. BY CODE",
-    //     //    colorId:"7"
-    //     //  },
-    //   },
-    //   (err: any, res: any) => {
-    //     if (err) {
-    //       console.error("Error creating event:", err);
-    //       return;
-    //     }
-    //     console.log("Event created:", res.data.htmlLink);
-    //   }
-    // );
+
+
+
+
+
+    calendar.events.insert(
+      {
+        calendarId: "primary",
+        requestBody: event,
+        //  requestBody: {
+
+        //    summary: "Hitesh Event Setting",
+        //    start: {
+        //      dateTime: "2023-05-18T16:30:00+05:30",
+        //      timeZone: "Asia/Kolkata",
+        //    },
+        //    end: {
+        //      dateTime: "2023-05-18T17:30:00+05:30",
+        //      timeZone: "Asia/Kolkata",
+        //    },
+        //    location:"india",
+        //    description: "This is a test event. BY CODE",
+        //    colorId:"7"
+        //  },
+      },
+      (err: any, res: any) => {
+        if (err) {
+          console.error("Error creating event:", err);
+          return;
+        }
+        console.log("Event created:", res.data.htmlLink);
+      }
+    );
   } catch (error) {
     console.error("Error:", error);
   }
