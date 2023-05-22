@@ -43,16 +43,32 @@ if (response.data.result !== -1) {
   console.log({response})
 
   console.log(response?.data?.token?.access_token);
-  // setCookies("access_token", response?.data?.token?.access_token);
-//    setCookies("damm", "newName", {
-//   path: "/",
-//   domain: "localhost"
-// });
-  
+
 
   setCookies("auth", response?.data);
 
   console.log({ cookies });
+
+
+
+  //calling api for setting event to calendar 
+
+
+let config2 = {
+  method: "post",
+  maxBodyLength: Infinity,
+  url: "/api/email",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: {
+    accessToken : response?.data?.token?.access_token
+  },
+};
+
+const doneEvent = axios.request(config2);
+
+
 
 }
 

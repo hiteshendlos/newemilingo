@@ -193,18 +193,28 @@ type EventInformation = {
   DueAmount: string;
   DueDate: string;
 };
+type accessTokenType = {
+  access_token: string;
+
+};
 
 
 
 
 
-export default async function googleCalendar(EventInfomation: EventInformation) {
+export default async function googleCalendar(EventInfomation: EventInformation, accessToken: accessTokenType) {
   try {
     // Load the stored access token and refresh token
 
+    const { access_token } = accessToken;
+    
+
+    console.log({access_token});
+
+
     const clientId = "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com";
-    const access_token =
-      "ya29.a0AWY7CkmyuuyHC7sDCZ9uEEAHUKuWqtxxupMmd7-4AXNEmUQ__dtR2PQQU9lL-qutEH1SUpOsNltaJgk3D5OJL2fsoMAyN5tGk_e-b9q8ZfGgPPUPfBPtD6R4b4O693_nqwKUqABgWrWppHB-pI7ZQAH_fl4DaCgYKAb8SARMSFQG1tDrpF23n1muomzhnluactYlurw0163";
+    // const access_token =
+    //   "ya29.a0AWY7CkmyuuyHC7sDCZ9uEEAHUKuWqtxxupMmd7-4AXNEmUQ__dtR2PQQU9lL-qutEH1SUpOsNltaJgk3D5OJL2fsoMAyN5tGk_e-b9q8ZfGgPPUPfBPtD6R4b4O693_nqwKUqABgWrWppHB-pI7ZQAH_fl4DaCgYKAb8SARMSFQG1tDrpF23n1muomzhnluactYlurw0163";
     //  / Replace with the stored access token
     // Create a new instance of the OAuth2 client
     const oauth2Client = new google.auth.OAuth2();
@@ -230,7 +240,7 @@ export default async function googleCalendar(EventInfomation: EventInformation) 
     // };
 
     const event = {
-      summary: EventInfomation?.Summary ? EventInfomation?.Summary : "Hitesh Event Setting",
+      summary: EventInfomation?.Summary ? EventInfomation?.Summary : "Hitesh Endlos Event Summary",
       start: {
         dateTime: EventInfomation.DueDate,
         timeZone: "Asia/Kolkata",
@@ -239,22 +249,17 @@ export default async function googleCalendar(EventInfomation: EventInformation) 
         dateTime: EventInfomation.DueDate,
         timeZone: "Asia/Kolkata",
       },
-      description:`Your Amount due ${EventInfomation.DueAmount}`,
+      description: `Your Amount due ${EventInfomation.DueAmount}`,
       location: "india",
       colorId: "7",
     };
 
-  //   // API request to fetch events within the time range
-  //  // Make API request to retrieve the list of calendars
-  //   const response = await calendar.calendarList.list()
+    //   // API request to fetch events within the time range
+    //  // Make API request to retrieve the list of calendars
+    //   const response = await calendar.calendarList.list()
 
-  //   // console.log({calendarlist:response});
-  //   console.log({calendarlist:response.data.items});
-
-
-
-
-
+    //   // console.log({calendarlist:response});
+    //   console.log({calendarlist:response.data.items});
 
     calendar.events.insert(
       {
