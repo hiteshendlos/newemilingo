@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
 
         // Set search criteria (optional)
-        const searchCriteria = ["ALL"];
+        const searchCriteria = ["UNSEEN"];
 
         imap.search(searchCriteria, function (err: any, results: any) {
           if (err) {
@@ -71,11 +71,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                   //Finding the Due date and other things from email
 
                   //  console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
+                  // const ChatGptResponse =
+                  //   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name", 
+                  // "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);
                   const ChatGptResponse =
-                    await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name", 
-                  "Event Date" and "Amount" ${emailArray[emailArray.length - 1]?.TextBody}`);
+                    await ChatGpt(`Can you details in given text event information in a object formet? bidercate it into "Event Name", 
+                  "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);
 
-                  console.log(ChatGptResponse);
+                  // console.log(ChatGptResponse);
+                  console.log(typeof ChatGptResponse);
+
+
+                  // const jsonString = JSON.stringify(ChatGptResponse);
+
+                  const parseddd = JSON.parse(ChatGptResponse);
+
+
+
+                     const keys = Object.keys(parseddd);
+                     console.log(typeof parseddd);
+                     console.log(keys);
+
+                  console.log({ parseddd });
+
+                  // console.log(ChatGptResponse["Event Name"]);
+
+                  // console.log(JSON.parse({ChatGptResponse}))
 
                 
                   res.status(200).json({

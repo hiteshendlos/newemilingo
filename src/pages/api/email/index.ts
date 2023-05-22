@@ -115,16 +115,29 @@ try {
               //temp for video making code
 
               // console.log(emailObject?.TextBody);
+              // const ChatGptResponse =
+              //   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",
+              //   "Event Date" and "Amount" in an object by sereated eventName,date and amount ${emailObject?.TextBody}`);
+              // const ChatGptResponse = await ChatGpt(
+              //   `${emailObject?.TextBody} Can you help me search for specific data from a text? I have a text  that contains information about bill or invoices, and I need to extract details such as the event Name, amount, and due date. How can I retrieve this information from the text using your assistance? `
+              // );
+
+              // console.log(ChatGptResponse);
+
               const ChatGptResponse =
                 await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",
-                "Event Date" and "Amount" ? And Give Response in an object formet  ${emailObject?.TextBody}`);
-
-              // console.log(ChatGptResponse);
+                "Event Date" and "Amount" in an object by sereated eventName,date and amount ${emailObject?.TextBody}`);
 
               // console.log(typeof ChatGptResponse);
-              // console.log(ChatGptResponse);
+
+              const splited = ChatGptResponse.split(':')
+
+              console.log({ splited });
+              console.log({ ChatGptResponse });
 
               let myobject = JSON.parse(ChatGptResponse);
+
+              console.log({ ChatGptResponse });
 
               const keys = Object.keys(myobject);
               console.log(typeof myobject);
@@ -142,7 +155,27 @@ try {
               const dueDate = await ChatGpt(`Can you please provide me given date in DD/MM/YYYY Formet only give me one date ${myobject[eDate[0]]}`);
 
               console.log({ dueDate });
-              const mydueDate = new Date(dueDate);
+              console.log({ eventData: myobject[eDate[0]] });
+              // const mydueDate = new Date(dueDate);
+
+              const inputDate = dueDate;
+              const [day, month, year] = inputDate.split("/");
+              const formattedDate = new Date(`${year}-${month}-${day}`);
+              const mydueDate = formattedDate.toISOString();
+
+              console.log({ mydueDate });
+
+              //end Date
+
+              const isoDate = new Date(`${year}-${month}-${day}T01:00:00`);
+              const formattedDate2 = new Date(`${year}-${month}-${day}T01:00:00`);
+              const isoDate2 = formattedDate2.toISOString();
+              const endDate = isoDate.toISOString();
+
+              console.log({ isoDate2 });
+              console.log({ endDate });
+
+              console.log(isoDate);
 
               // const EventName = myobject[eName[0]];
 
@@ -162,51 +195,59 @@ try {
                 //  Summary: emailArray[emailArray.length - 1]?.Subject,
                 DueAmount: myobject[eAmount[0]],
                 // DueDate: object["Due Date"],
-                DueDate: mydueDate.toISOString(),
+                DueDate: mydueDate,
               };
 
               //setting event to the google calender
 
-              googleCalendar(EventInfomation, accessToken);
+              const gcResponse = await googleCalendar(EventInfomation, accessToken);
+
+              console.log({ gcResponse });
               //  res.send({emailResponse:EventInfomation})
-              res.send({ emailResponse: EventInfomation });
+              // res.send({ error: gcResponse });
 
-              //  console.log({ summ: myobject[eName[0]] });
-              //  console.log({EventInfomation});
-
-              // res.status(200).json({
-              //   emailResponse: "emailArray",
-              // });
-
-              // console.log(myobject[keys[0]]);
-              // console.log(keys[keys.length-1]);
-              // console.log(typeof keys);
-              // console.log(typeof myobject);
-
-              // const DueDate = await ChatGpt(`give it in DD/MM/YYYY formet  ${myobject[keys[keys.length - 1]]}`);
-
-              //  console.log({DueDate} );
-
-              //  const EventInfomation = {
-              //    Summary: "Hitesh Endlos Event Generation Automation",
-              //    //  Summary: emailArray[emailArray.length - 1]?.Subject,
-              //    DueAmount: myobject[keys[1]],
-              //    // DueDate: object["Due Date"],
-              //    DueDate: dueDate.toISOString(),
-              //  };
-
-              //  console.log({ data:myobject[keys[0]] });
-
-              //  console.log(object);
-              //  console.log(object["Due Date"]);
-              //  console.log(object["Amount Due"]);
-              //  console.log(ChatGptResponse.Duedate);
-              //  console.log(typeof ChatGptResponse)
-
-              // emailArray.push(emailObject.Subject);
-
-              // Check if all emails are parsed
+              if (gcResponse?.status == "confirmed") {
+                res.status(200).json({
+                  status: true,
+                  emailResponse: gcResponse,
+                });
+              }
               if (emailArray.length === results.length) {
+                //  console.log({ summ: myobject[eName[0]] });
+                //  console.log({EventInfomation});
+
+                // res.status(200).json({
+                //   emailResponse: "emailArray",
+                // });
+
+                // console.log(myobject[keys[0]]);
+                // console.log(keys[keys.length-1]);
+                // console.log(typeof keys);
+                // console.log(typeof myobject);
+
+                // const DueDate = await ChatGpt(`give it in DD/MM/YYYY formet  ${myobject[keys[keys.length - 1]]}`);
+
+                //  console.log({DueDate} );
+
+                //  const EventInfomation = {
+                //    Summary: "Hitesh Endlos Event Generation Automation",
+                //    //  Summary: emailArray[emailArray.length - 1]?.Subject,
+                //    DueAmount: myobject[keys[1]],
+                //    // DueDate: object["Due Date"],
+                //    DueDate: dueDate.toISOString(),
+                //  };
+
+                //  console.log({ data:myobject[keys[0]] });
+
+                //  console.log(object);
+                //  console.log(object["Due Date"]);
+                //  console.log(object["Amount Due"]);
+                //  console.log(ChatGptResponse.Duedate);
+                //  console.log(typeof ChatGptResponse)
+
+                // emailArray.push(emailObject.Subject);
+
+                // Check if all emails are parsed
                 //Finding the Due date and other things from email
 
                 //  console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
@@ -279,12 +320,18 @@ try {
                 // googleCalendar("EventInfomation", accessToken);
 
                 // All emails are parsed, send the array as a response
-                res.status(200).json({
-                  emailResponse: emailArray,
-                });
+                // res.status(200).json({
+                //   emailResponse: emailArray,
+                // });
               }
             } catch (err) {
-              console.error(err);
+
+              console.log("first error block");
+              // console.error(err.message);
+
+
+res.status(500).json({ status: false, error: err.message });
+
             }
           });
         });

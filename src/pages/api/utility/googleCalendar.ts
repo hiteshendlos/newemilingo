@@ -206,10 +206,13 @@ export default async function googleCalendar(EventInfomation: EventInformation, 
   try {
     // Load the stored access token and refresh token
 
-    const { access_token } = accessToken;
+
+
+
+     const accessToken2 ="ya29.a0AWY7CkngXBWR_0mNANO9sn8uyQgc90TyhFve0oc7ZN2SYb3XLUQe43muf5MwsBL0jL8H1UOvesYe-xu7FV4Z466MrKeYtD5_fe0Nth-TDfuRPkh85EtnhrDHTdMVIo5cUtNdWxVqLoc3HmOt_wt1b4XIq8FhaCgYKAUESARMSFQG1tDrpQMZe-LL0iW342phSelpqig0163";
     
 
-    console.log({access_token});
+    console.log({ accessToken });
 
 
     const clientId = "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com";
@@ -219,7 +222,9 @@ export default async function googleCalendar(EventInfomation: EventInformation, 
     // Create a new instance of the OAuth2 client
     const oauth2Client = new google.auth.OAuth2();
     oauth2Client.setCredentials({
-      access_token: access_token,
+      // access_token: access_token,
+      access_token: accessToken,
+      // access_token: accessToken2,
       clientId,
     });
 
@@ -254,6 +259,24 @@ export default async function googleCalendar(EventInfomation: EventInformation, 
       colorId: "7",
     };
 
+
+
+    // const event = {
+    //   summary: EventInfomation?.Summary ? EventInfomation?.Summary : "Hitesh Endlos Event Summary",
+    //   start: {
+    //     dateTime: `${EventInfomation.DueDate}T00:00:00`,
+    //     timeZone: "Asia/Kolkata",
+    //   },
+    //   end: {
+    //     dateTime: `${EventInfomation.DueDate}T06:00:00`,
+    //     timeZone: "Asia/Kolkata",
+    //   },
+    //   description: `Your Amount due ${EventInfomation.DueAmount}`,
+    //   location: "india",
+    //   colorId: "7",
+    // };
+
+
     //   // API request to fetch events within the time range
     //  // Make API request to retrieve the list of calendars
     //   const response = await calendar.calendarList.list()
@@ -261,34 +284,78 @@ export default async function googleCalendar(EventInfomation: EventInformation, 
     //   // console.log({calendarlist:response});
     //   console.log({calendarlist:response.data.items});
 
-    calendar.events.insert(
-      {
-        calendarId: "primary",
-        requestBody: event,
-        //  requestBody: {
 
-        //    summary: "Hitesh Event Setting",
-        //    start: {
-        //      dateTime: "2023-05-18T16:30:00+05:30",
-        //      timeZone: "Asia/Kolkata",
-        //    },
-        //    end: {
-        //      dateTime: "2023-05-18T17:30:00+05:30",
-        //      timeZone: "Asia/Kolkata",
-        //    },
-        //    location:"india",
-        //    description: "This is a test event. BY CODE",
-        //    colorId:"7"
-        //  },
-      },
-      (err: any, res: any) => {
-        if (err) {
-          console.error("Error creating event:", err);
-          return;
-        }
-        console.log("Event created:", res.data.htmlLink);
-      }
-    );
+
+
+
+
+
+
+
+   const calResponse = await new Promise((resolve, reject) => {
+     calendar.events.insert(
+       {
+         calendarId: "primary",
+         requestBody: event,
+       },
+       (err: any, eventres: any) => {
+         if (err) {
+           console.error("Error creating event:", err);
+           reject(err);
+         } else {
+           console.log("Event created:", eventres.data.htmlLink);
+           resolve(eventres.data);
+         }
+       }
+     );
+   });
+
+   return calResponse;
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     const calResponse = calendar.events.insert(
+//       {
+//         calendarId: "primary",
+//         requestBody: event,
+//         //  requestBody: {
+
+//         //    summary: "Hitesh Event Setting",
+//         //    start: {
+//         //      dateTime: "2023-05-18T16:30:00+05:30",
+//         //      timeZone: "Asia/Kolkata",
+//         //    },
+//         //    end: {
+//         //      dateTime: "2023-05-18T17:30:00+05:30",
+//         //      timeZone: "Asia/Kolkata",
+//         //    },
+//         //    location:"india",
+//         //    description: "This is a test event. BY CODE",
+//         //    colorId:"7"
+//         //  },
+//       },
+//       (err: any, eventres: any) => {
+//         if (err) {
+//           console.error("Error creating event:", err);
+//           return;
+//         }
+// console.log({res});
+//         console.log("Event created:", eventres.data.htmlLink);
+//         return eventres.data;
+//       }
+//     );
+
+//     return calResponse;
   } catch (error) {
     console.error("Error:", error);
   }
