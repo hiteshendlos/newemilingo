@@ -48,7 +48,7 @@ const config = {
 
     res.status(200).json({
      status:true, 
-      token:tokens
+      // token:tokens
      });
   } catch (error) {
     res.status(401).json({ status:false,error: error });

@@ -52,7 +52,7 @@ try {
 
   });
 
-  const emailArray: {}[] = [];
+  const emailArray:any = [];
 
   const  openInbox =(callback: any)=> {
     imap.openBox("INBOX", true, callback);
@@ -130,52 +130,52 @@ try {
 
               // console.log(typeof ChatGptResponse);
 
-              const splited = ChatGptResponse.split(':')
+              // const splited = ChatGptResponse.split(':')
 
-              console.log({ splited });
-              console.log({ ChatGptResponse });
+              // console.log({ splited });
+              // console.log({ ChatGptResponse });
 
-              let myobject = JSON.parse(ChatGptResponse);
+              // let myobject = JSON.parse(ChatGptResponse);
 
-              console.log({ ChatGptResponse });
+              // console.log({ ChatGptResponse });
 
-              const keys = Object.keys(myobject);
-              console.log(typeof myobject);
-              console.log(keys);
-              // console.log(keys[0]);
+              // const keys = Object.keys(myobject);
+              // console.log(typeof myobject);
+              // console.log(keys);
+              // // console.log(keys[0]);
 
-              // console.log({ first: myobject[keys[0]] });
+              // // console.log({ first: myobject[keys[0]] });
 
-              const eName = keys.filter((element) => element.toLowerCase().includes("name"));
-              const eAmount = keys.filter((element) => element.toLowerCase().includes("amount"));
-              const eDate = keys.filter((element) => element.toLowerCase().includes("date"));
+              // const eName = keys.filter((element) => element.toLowerCase().includes("name"));
+              // const eAmount = keys.filter((element) => element.toLowerCase().includes("amount"));
+              // const eDate = keys.filter((element) => element.toLowerCase().includes("date"));
 
-              console.log({ eName, eAmount, eDate });
+              // console.log({ eName, eAmount, eDate });
 
-              const dueDate = await ChatGpt(`Can you please provide me given date in DD/MM/YYYY Formet only give me one date ${myobject[eDate[0]]}`);
+              // const dueDate = await ChatGpt(`Can you please provide me given date in DD/MM/YYYY Formet only give me one date ${myobject[eDate[0]]}`);
 
-              console.log({ dueDate });
-              console.log({ eventData: myobject[eDate[0]] });
-              // const mydueDate = new Date(dueDate);
+              // console.log({ dueDate });
+              // console.log({ eventData: myobject[eDate[0]] });
+              // // const mydueDate = new Date(dueDate);
 
-              const inputDate = dueDate;
-              const [day, month, year] = inputDate.split("/");
-              const formattedDate = new Date(`${year}-${month}-${day}`);
-              const mydueDate = formattedDate.toISOString();
+              // const inputDate = dueDate;
+              // const [day, month, year] = inputDate.split("/");
+              // const formattedDate = new Date(`${year}-${month}-${day}`);
+              // const mydueDate = formattedDate.toISOString();
 
-              console.log({ mydueDate });
+              // console.log({ mydueDate });
 
-              //end Date
+              // //end Date
 
-              const isoDate = new Date(`${year}-${month}-${day}T01:00:00`);
-              const formattedDate2 = new Date(`${year}-${month}-${day}T01:00:00`);
-              const isoDate2 = formattedDate2.toISOString();
-              const endDate = isoDate.toISOString();
+              // const isoDate = new Date(`${year}-${month}-${day}T01:00:00`);
+              // const formattedDate2 = new Date(`${year}-${month}-${day}T01:00:00`);
+              // const isoDate2 = formattedDate2.toISOString();
+              // const endDate = isoDate.toISOString();
 
-              console.log({ isoDate2 });
-              console.log({ endDate });
+              // console.log({ isoDate2 });
+              // console.log({ endDate });
 
-              console.log(isoDate);
+              // console.log(isoDate);
 
               // const EventName = myobject[eName[0]];
 
@@ -190,17 +190,24 @@ try {
 
               //   })
 
+              // const EventInfomation = {
+              //   Summary: myobject[eName[0]],
+              //   //  Summary: emailArray[emailArray.length - 1]?.Subject,
+              //   DueAmount: myobject[eAmount[0]],
+              //   // DueDate: object["Due Date"],
+              //   DueDate: mydueDate,
+              // };
               const EventInfomation = {
-                Summary: myobject[eName[0]],
-                //  Summary: emailArray[emailArray.length - 1]?.Subject,
-                DueAmount: myobject[eAmount[0]],
+                Summary: "Plastics Recycling Show Middle East & Africa (PRS ME&A)",
+
+                DueAmount: "$473",
                 // DueDate: object["Due Date"],
-                DueDate: mydueDate,
+                DueDate: "2023-09-17T00:00:00.000Z",
               };
 
               //setting event to the google calender
 
-              const gcResponse = await googleCalendar(EventInfomation, accessToken);
+              const gcResponse:any = await googleCalendar(EventInfomation, accessToken);
 
               console.log({ gcResponse });
               //  res.send({emailResponse:EventInfomation})
@@ -330,7 +337,7 @@ try {
               // console.error(err.message);
 
 
-res.status(500).json({ status: false, error: err.message });
+res.status(500).json({ status: false, error: err });
 
             }
           });

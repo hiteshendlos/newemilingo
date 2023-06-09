@@ -22,27 +22,6 @@ export default async function ChatGpt(query: any) {
     );
 
 
-    // console.log(response.data.choices[0]);
-    // console.log(JSON.parse(response.data.choices[0].message.content));
-
-    // const parsedData = JSON.parse(response.data.choices[0].message.content);
-
-
-    //         //  let myobject = JSON.parse(ChatGptResponse);
-
-    //          const keys = Object.keys(parsedData);
-    //          console.log(typeof parsedData);
-           
-    //          const eName = keys.filter((element) => element.toLowerCase().includes("name"));
-    //          const eAmount = keys.filter((element) => element.toLowerCase().includes("amount"));
-    //          const eDate = keys.filter((element) => element.toLowerCase().includes("date"));
-
-    //           console.log({ eName, eAmount, eDate });
-
-
-
-
-
     const answer = response.data.choices[0].message.content;
 
 
@@ -56,3 +35,5 @@ export default async function ChatGpt(query: any) {
 
 //   return data;
 }
+
+

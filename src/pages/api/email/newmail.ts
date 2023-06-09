@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       port: 143,
     });
 
-    const emailArray: {}[] = [];
+    const emailArray:any = [];
 
     const openInbox = (callback: any) => {
       imap.openBox("INBOX", true, callback);
