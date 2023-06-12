@@ -2,3 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+.myfontback {
+    background-image: linear-gradient(
+      to right bottom,
+      #d30079,
+      #be0987,
+      #a41b93,
+      #86289c,
+      #6131a1,
+      #4f48b4,
+      #355cc3,
+      #006ece,
+      #0095e7,
+      #00b9f2,
+      #00dbf3,
+      #5ffbf1
+    );
+  
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .mybackgroud {
+    
+    background-image: linear-gradient(
+      to right bottom,
+      #d30079,
+      #be0987,
+      #a41b93,
+      #86289c,
+      #6131a1,
+      #4f48b4,
+      #355cc3,
+      #006ece,
+      #0095e7,
+      #00b9f2,
+      #00dbf3,
+      #5ffbf1
+    );
+  }
+  .mybackgroud:hover {
+    opacity: 0.7;
+  }
+  
+  .headandfoot {
+    background-image: linear-gradient(
+      to right bottom,
+      rgba(211, 0, 121, 0.1),
+      rgba(190, 9, 135, 0.1),
+      rgba(164, 27, 147, 0.1),
+      rgba(134, 40, 156, 0.1),
+      rgba(97, 49, 161, 0.1),
+      rgba(79, 72, 180, 0.1),
+      rgba(53, 92, 195, 0.1),
+      rgba(0, 110, 206, 0.1),
+      rgba(0, 149, 231, 0.1),
+      rgba(0, 185, 242, 0.1),
+      rgba(0, 219, 243, 0.1),
+      rgba(95, 251, 241, 0.1)
+    );
+  }
+  
+  
+  
+  .custom_li{
+  
+    list-style: square;
+  
+    color: #2C73C5;
+    
+  
+  
+  }
