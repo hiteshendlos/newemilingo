@@ -1,6 +1,7 @@
 import Register from "@/components/core/forms/Register";
 
 const HomeHero = () => {
+  
 
 
   return (

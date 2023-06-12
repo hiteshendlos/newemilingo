@@ -9,22 +9,24 @@ import { FormikHelpers, useFormik } from "formik";
 
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import {  useRouter } from "next/router";
 
 type Props = {
 
 };
 
 const Register: React.FC<Props> = ({}) => {
+
+  const router =useRouter();
   const initialValues = {
-    fullName: "",
+    name: "",
     email: "",
-    message: "",
+    password: "",
     mobile: "",
   };
 
   const validationSchema = Yup.object({
-    fullName: Yup.string().required("Full Name is Required"),
-    message: Yup.string().required("Message is Required"),
+    name: Yup.string().required("Full Name is Required"),
     email: Yup.string().email("Invalid email address").required("Email is Required"),
     password: Yup.string().required("Password is Required"),
 
@@ -33,35 +35,76 @@ const Register: React.FC<Props> = ({}) => {
   });
 
   const onSubmit = async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
-    const { fullName, email, mobile, message } = values;
-
+ 
     let id = toast.loading("Loading...");
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify(values);
 
-    let requestOptions: RequestInit = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
 
-    fetch("https://utilit.vercel.app/api/email", requestOptions)
-      .then((result) => {
-        console.log(result);
 
-        toast.success("Thanks for Choosing us!", { id });
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'  // Set the appropriate Content-Type for your API
+  },
+  body: raw
+};
 
-        //  Reset the form
-        resetForm();
-      })
-      .catch((error) => {
-        toast.error(error.message, { id });
-        console.log(error);
-      });
+fetch('/api/user/register/', options)
+  .then(response => response.json())
+  .then(data => {
+    console.log('Response:', data);
+
+   
+    if( data?.error){
+      toast.error(data?.error , { id });
+      
+    }
+    
+    else{
+      
+      toast.sucess(data?.message , { id });
+
+
+    }
+
+    // Handle the response data
+  })
+  .catch(error => {
+
+
+    toast.error(error , { id });
+
+    
+    router.push('/')
+
+    console.error('Error:', error);
+    // Handle any errors
+  });
+
+
+    // await fetch("/api/user/register", requestOptions)
+    //   .then((result) => {
+    //     console.log({result});
+
+    //     const {body}= result.data;
+
+    //     console.log({body})
+
+    //     toast.success("Thanks for Choosing us!", { id });
+
+
+
+    //     //  Reset the form
+    //     resetForm();
+    //   })
+    //   .catch((error) => {
+
+        
+    //     toast.error(error.message, { id });
+    //     console.log(error);
+    //   });
 
     setSubmitting(false);
   };
@@ -70,6 +113,8 @@ const Register: React.FC<Props> = ({}) => {
     initialValues,
     validationSchema,
     onSubmit,
+
+    // onSubmit:()=>{alert('hello')}
   });
 
   return (
@@ -84,14 +129,14 @@ const Register: React.FC<Props> = ({}) => {
               className="inline-block w-[90%] text-gray-900  p-3 rounded-lg focus:outline-none focus:shadow-outline"
               type="text"
               placeholder=""
-              id="fullName"
-              name="fullName"
+              id="name"
+              name="name"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.fullName}
+              value={formik.values.name}
             />
           </div>
-          {formik.touched.fullName && formik.errors.fullName ? <div className="text-red-600">{formik.errors.fullName}</div> : null}
+          {formik.touched.name && formik.errors.name ? <div className="text-red-600">{formik.errors.name}</div> : null}
         </div>
         <div>
           <span className="uppercase text-sm text-gray-600 font-bold">Your Email</span>
@@ -146,7 +191,7 @@ const Register: React.FC<Props> = ({}) => {
               value={formik.values.password}
             />
           </div>
-          {formik.touched.email && formik.errors.email ? <div className="text-red-600">{formik.errors.password}</div> : null}
+          {formik.touched.password && formik.errors.password ? <div className="text-red-600">{formik.errors.password}</div> : null}
         </div>
 
         <div className="">
@@ -159,6 +204,8 @@ const Register: React.FC<Props> = ({}) => {
           </button>
         </div>
       </form>
+
+  
     </>
   );
 };
