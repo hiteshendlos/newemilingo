@@ -101,7 +101,7 @@ function MyComponent() {
 
 
 
-settingEvent(response?.data?.token?.access_token);
+// settingEvent(response?.data?.token?.access_token);
 
 
         }
@@ -150,7 +150,7 @@ settingEvent(response?.data?.token?.access_token);
   const login = useGoogleLogin({
     onSuccess: onSuccess,
     flow: "auth-code",
-    scope: "openid email profile https://www.googleapis.com/auth/calendar",
+    scope: "openid email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly",
   });
 
   return <button onClick={login}>Authunticate with Google for setting event </button>;

@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <>
       <div className="h-screen  w-screen flex justify-center items-center">
-        {/* <GoogleSignIN /> */}
+        <GoogleSignIN />
 
-        <WhatpsApp/>
+        {/* <WhatpsApp/> */}
 
        
         {/* <button className="bg-blue-600 text-white px-4 py-4 rounded-lg text-2xl hover:opacity-70">Fetch Emails</button> */}

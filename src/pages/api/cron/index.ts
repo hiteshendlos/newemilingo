@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     
 
-    // console.log(finalMessage);
+    console.log(finalMessage);
     // console.log(typeof finalMessage);
 
 
@@ -66,8 +66,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 
     finalMessage &&
-      whatsAppSend(finalMessage).then(() => {
-        res.status(200).json({ message: "Chat gpt Answer sended" });
+      whatsAppSend(finalMessage).then((response) => {
+
+        console.log(response);
+        res.status(200).json({ message: "Chat gpt Answer sended" + finalMessage });
       });
 
     // response && res.status(200).json({ message: "This is a GET request", emailResponse: response });

@@ -74,6 +74,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                   // const ChatGptResponse =
                   //   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name", 
                   // "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);
+
+                  
                   const ChatGptResponse =
                     await ChatGpt(`Can you details in given text event information in a object formet? bidercate it into "Event Name", 
                   "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);

@@ -8,8 +8,8 @@ export default async function whatsAppSend(body: any) {
 // const apiUrl = process.env.UTLTRAMSG_API_URL;
 // const ultramsg_token = process.env.UTLTRAMSG_TOKEN;
 // const senderNumber:string|undefined = process.env.WHATSAPP_SENDER_NUMBER;
-const  apiurl=" https://api.ultramsg.com/instance50201/messages/chat"
-const token = 'nx2s1g2id1z4z79k';
+const  apiurl=" https://api.ultramsg.com/instance50525/messages/chat"
+const token = '6ey15b6bsr0oeegq';
 const senderNumber = "8740093482";
 
     console.log({body});
@@ -28,14 +28,21 @@ const config = {
 };
 
 const response = axios(config)
-  .then((response) => console.log(response.data))
+  .then((response) => {
+    
+    console.log(response.data)
+    
+
+    return response
+    })
   .catch((error) => console.log("error", error));
 
-   
+  return response;  
 
     // const answer = response.data.choices[0].message.content;
 
     // return answer;
+
   } catch (error) {
     console.error("Error:", error);
   }
