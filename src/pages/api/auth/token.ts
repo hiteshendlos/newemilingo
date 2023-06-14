@@ -12,7 +12,7 @@ type DataType = {
  error?: any;
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<DataType>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 
    if (req.method === "GET") {
@@ -26,20 +26,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 
     const {token} =req.body;
-const config = {
+    const config = {
       clientId: "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com",
       clientSecret: "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",
-      // scopes: ["openid", "email", "profile", "https://www.googleapis.com/auth/calendar"],
-      scopes: "openid email profile https://www.googleapis.com/auth/calendar",
-      cookiePolicy: "single_host_origin",
-      accessType: "offline",
-      responseType: "code",
-      redirectUri: "http://localhost:3000",
+    
     };
 
     const oAuth2Client = new OAuth2Client(config.clientId, config.clientSecret, "postmessage");
 
-    // const { tokens } = await oAuth2Client.getToken("4/0AbUR2VOx5du6Inf4WISXSxzOYiP1NFqB4ljUbbyLEQndwTutxX4yozb4tKFA9i5bx1y-EQ"); // exchange code for tokens
+    
     const { tokens } = await oAuth2Client.getToken(token); // 
 
 
@@ -47,8 +42,9 @@ const config = {
     console.log({tokens});
 
     res.status(200).json({
-     status:true, 
-      // token:tokens
+      status:true,
+      message:"Token Genereated Successfylly", 
+      token:tokens
      });
   } catch (error) {
     res.status(401).json({ status:false,error: error });

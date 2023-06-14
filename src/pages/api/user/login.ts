@@ -40,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
             const userDetails= {
+              _id:user._id,
                 name:user.name,
                 email:user.email,
 
@@ -58,7 +59,7 @@ const token = await JwtHelper.generateTokens(userDetails)
         
     }else{
 
-        res.status(401).json({
+        res.status(404).json({
             error:"Please Login with valid creditionals",
             
         })

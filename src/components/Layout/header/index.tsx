@@ -1,5 +1,5 @@
+"use client"
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import Image from "next/image";
 // import logo from "@/assets/logo/logo.svg";
@@ -14,6 +14,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Navbar from "./navbar";
 import { BsInstagram, BsLinkedin, BsTelephoneFill, BsTwitter } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
+import { toast } from "react-hot-toast";
 
 type Props = {
   isDarkTheme: boolean;
@@ -24,9 +25,15 @@ const Header: React.FC<Props> = ({ isDarkTheme }) => {
   const router = useRouter();
   const [hamburger, setHamburger] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [local, setLocale] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+
+    if (typeof window !== 'undefined') {
+      localStorage.getItem('token') && setLocale(true)
+    
+    }
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -78,9 +85,34 @@ const Header: React.FC<Props> = ({ isDarkTheme }) => {
             </div>
 
             <div className="flex justify-between ">
-              <Navbar isDarkTheme={false} isOpen={hamburger} />
+              {/* <Navbar isDarkTheme={false} isOpen={hamburger} /> */}
 
-              <div className="flex items-center gap-4 md:ml-7">
+            {local?<div className="flex items-center gap-4 md:ml-7">
+             
+                {/* <Link href="/login" className=" text-btn2 font-medium text-dodgerblue"> */}
+                  <button className={`myfontback cursor-pointer`} onClick={()=>{
+
+localStorage.clear()
+
+router.push('/login')
+
+toast.success("logout Successfully")
+
+                  }} >
+                    {" "}
+                    Logout
+                  </button>
+                {/* </Link> */}
+
+                <button className=" lg:hidden  cursor-pointer bg-transparent" onClick={toggleBurger}>
+                  {/* <GiHamburgerMenus /> */}
+                  <GiHamburgerMenu size={30} className={`  ${isDarkTheme && !isSticky ? "text-white" : ""}`} />
+                  {/* <Image src={hamburgericon} className="h-[51px] w-[100%] " alt="Hamburger" /> */}
+                </button>
+                {/* <span className=" lg:hidden  cursor-pointer bg-transparent">
+                  <GiHamburgerMenu />
+                </span> */}
+              </div>:<div className="flex items-center gap-4 md:ml-7">
                 <Link href="/register" className=" text-btn2 font-medium text-dodgerblue">
                   <button className={`myfontback cursor-pointer`} >
                     {" "}
@@ -102,7 +134,8 @@ const Header: React.FC<Props> = ({ isDarkTheme }) => {
                 {/* <span className=" lg:hidden  cursor-pointer bg-transparent">
                   <GiHamburgerMenu />
                 </span> */}
-              </div>
+              </div>} 
+             
             </div>
           </div>
         </header>

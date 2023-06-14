@@ -1,3 +1,5 @@
+"use client"
+
 import Login from "@/components/core/forms/Login";
 
 const LoginHero = () => {

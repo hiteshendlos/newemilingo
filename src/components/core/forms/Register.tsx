@@ -35,6 +35,11 @@ const Register: React.FC<Props> = ({}) => {
   });
 
   const onSubmit = async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
+
+
+
+
+    
  
     let id = toast.loading("Loading...");
 
@@ -58,14 +63,21 @@ fetch('/api/user/register/', options)
 
    
     if( data?.error){
-      toast.error(data?.error , { id });
+
+      console.log(data?.error);
+      toast.error("error" , { id });
       
     }
     
     else{
       
-      toast.sucess(data?.message , { id });
+      toast.success(data?.message , { id });
 
+      localStorage.setItem("token",JSON.stringify(data.payload.token))
+    localStorage.setItem("user",JSON.stringify(data.payload.user))
+    
+
+    router.push('/')
 
     }
 
@@ -74,38 +86,12 @@ fetch('/api/user/register/', options)
   .catch(error => {
 
 
-    toast.error(error , { id });
-
-    
-    router.push('/')
-
     console.error('Error:', error);
     // Handle any errors
   });
 
 
-    // await fetch("/api/user/register", requestOptions)
-    //   .then((result) => {
-    //     console.log({result});
-
-    //     const {body}= result.data;
-
-    //     console.log({body})
-
-    //     toast.success("Thanks for Choosing us!", { id });
-
-
-
-    //     //  Reset the form
-    //     resetForm();
-    //   })
-    //   .catch((error) => {
-
-        
-    //     toast.error(error.message, { id });
-    //     console.log(error);
-    //   });
-
+    
     setSubmitting(false);
   };
 
@@ -114,7 +100,7 @@ fetch('/api/user/register/', options)
     validationSchema,
     onSubmit,
 
-    // onSubmit:()=>{alert('hello')}
+  
   });
 
   return (

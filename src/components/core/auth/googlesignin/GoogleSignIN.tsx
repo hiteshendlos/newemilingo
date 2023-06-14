@@ -1,9 +1,13 @@
 import { GoogleLogin, GoogleOAuthProvider, hasGrantedAllScopesGoogle, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
+// import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 function MyComponent() {
-  const [cookies, setCookies, removeCookie] = useCookies(["auth"]);
+  // const [cookies, setCookies, removeCookie] = useCookies(["auth"]);
+
+  const  [User,setUser] = useState<any>()
 
   async function settingEvent(accessToken:any) {
  let config = {
@@ -48,6 +52,8 @@ function MyComponent() {
   // callAPIUntilSuccess();
 
   const onSuccess = (codeResponse: any) => {
+
+
     console.log({ codeResponse });
 
     let data = JSON.stringify({
@@ -66,86 +72,71 @@ function MyComponent() {
 
     const response = axios
       .request(config)
-      .then((response) => {
+      .then(async (response:any) => {
         if (response.data.result !== -1) {
-          console.log({ response });
 
-          console.log(response?.data?.token?.access_token);
 
-          setCookies("auth", response?.data);
-
-          console.log({ cookies });
-
-          //calling api for setting event to calendar
-
-          // let config2 = {
-          //   method: "post",
-          //   maxBodyLength: Infinity,
-          //   url: "/api/email",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          //   data: {
-          //     accessToken : response?.data?.token?.access_token
-          //   },
-          // };
-
-          // const doneEvent = axios.request(config2)
-          // .catch(error=>{
-          //   if(error.message="Unexpected token R in JSON at position 0"){
-          //     axios.request(config2);
-          //   }
-          // })
+          console.log("datais ",response.data);
 
 
 
 
 
-// settingEvent(response?.data?.token?.access_token);
 
+
+
+
+        
+          let data = JSON.stringify({
+            gAccesstoken: response.data.token.access_token,
+            gRfreshtoken:response.data.token.refresh_token
+
+          });
+          
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `/api/user/update?id=${User?._id}`,
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
+          
+          axios.request(config)
+          .then((response:any) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error:any) => {
+            console.log(error);
+          });
+          
+
+
+
+
+
+
+
+
+
+
+
+          const updatingToken = await axios.put(`/api/user/update?id=${User?._id}`)
+     
 
         }
 
 
         return response.data;
-        console.log(JSON.stringify(response.data));
+       
       })
-      .catch((error) => {
+      .catch((error:any) => {
         console.log(error);
       });
   };
 
-  //   const bookEvent =async ()=>{
 
-  //      let success = false;
-  //   while (!success) {
-  //     try {
-  //       const response = await fetch('your-api-endpoint');
-  //       const data = await response.json();
-
-  //       // Check for successful response
-  //       if (response.ok) {
-  //         success = true;
-  //         // Process the data or return it
-  //         return data;
-  //       } else {
-  //         // Handle error response
-  //         console.error(data);
-  //       }
-  //     } catch (error) {
-  //       // Handle network errors or other exceptions
-  //       console.error(error);
-  //     }
-
-  //     // Wait for a certain duration before retrying
-  //     await new Promise(resolve => setTimeout(resolve, 1000));
-  //   }
-
-  //   // Optional: Handle a maximum retry count to prevent an infinite loop
-
-  //   // If no successful response is received, you can return an error or take appropriate action
-  //   throw new Error('Unable to get a successful response from the API after multiple attempts.');
-  // }
 
   const login = useGoogleLogin({
     onSuccess: onSuccess,
@@ -153,7 +144,28 @@ function MyComponent() {
     scope: "openid email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly",
   });
 
-  return <button onClick={login}>Authunticate with Google for setting event </button>;
+
+useEffect(()=>{
+ if (window){
+
+    
+   const user:any = localStorage.getItem("user")
+   const user2 =JSON.parse(user)
+   setUser(user2)
+}
+},[])
+
+  return <>
+  
+
+  <button onClick={login} className="flex flex-col justify-center items-center">
+    
+
+    <FcGoogle size={50}/>
+    Authunticate
+       </button>
+  
+  </>
 }
 
 
@@ -179,7 +191,7 @@ const GoogleSignIN = (props: any) => {
   return (
     <>
  
-      <div className=" bg-blue-600 text-white px-4 py-4 rounded-lg text-2xl">
+      <div className=" bg-blue-500 text-white px-4 py-4 rounded-lg text-2xl">
         <GoogleOAuthProvider {...config}>
                 <MyComponent/>
         </GoogleOAuthProvider>

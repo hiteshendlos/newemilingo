@@ -14,12 +14,34 @@ message?: any;
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
  if (req.method === "GET") {
 
-    
+
+
+    try {
+
+
+      const  {type}= req.query;
+
+      await connectToMongo()
+
+      if(type=="all"){
+
+        const users = await User.find({})
+        res.status(200).json({
+          message:"All User",
+          users,
+         
+      })
+
+      }
+
+  
+ 
+      
+    } catch (error) {
+      
+    }
    
-    res.status(200).json({
-        message:"User API",
-        
-    })
+ 
 
    
   } else {

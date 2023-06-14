@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import User from "@/models/user";
 import BcryptHelper from "@/services/helpers/Bcrypt";
 import { connectToMongo } from "@/services/utility/db";
+import JwtHelper from "@/services/helpers/JwtHelper";
 
 type DataType = {
   status?: boolean;
@@ -30,13 +31,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const user  = await  User.create({
       ...req.body,
      "authorization.password":enpasscode,
-     "authorization.gAccesstoken":enpasscode
+    
   
   })
+  const userDetails= {
+    _id:user._id,
+      name:user.name,
+      email:user.email,
+
+  }
+
+  const token = await JwtHelper.generateTokens(userDetails)
+
+  const payload ={
+    user:{
+      _id:user._id,
+      name:user.name,
+      email:user.email,
+      mobile:user.mobile,
+},
+
+token
+  }
   
   res.status(200).json({
       message:"User Regiterd Succesfully",
-      user
+      payload
   })
 
     }

@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { AiOutlineContacts, AiOutlineMail, AiOutlineUserAdd } from "react-icons/ai";
 import { TbPassword} from "react-icons/tb";
@@ -5,16 +6,30 @@ import { FormikHelpers, useFormik } from "formik";
 
 
 
+import {useEffect} from 'react'
+
+
+
 
 
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import {  useRouter } from "next/router";
 type Props = {
 
 };
 
 const Login: React.FC<Props> = ({}) => {
+
+  
+  const router = useRouter();
+
+
+  const [userCookies, setUserCookie, removeCookie] = useCookies(['user']);
+
+
   const initialValues = {
   
     email: "",
@@ -30,35 +45,57 @@ const Login: React.FC<Props> = ({}) => {
   });
 
   const onSubmit = async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
-    const { fullName, email, mobile, message } = values;
 
-    let id = toast.loading("Loading...");
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify(values);
+let id = toast.loading("Loading...");
+   // Set request headers
+const headers = {
+  'Content-Type': 'application/json',
+};
 
-    let requestOptions: RequestInit = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+// Create request body
+const data = JSON.stringify(values);
 
-    fetch("https://utilit.vercel.app/api/email", requestOptions)
-      .then((result) => {
-        console.log(result);
+// Set Axios request configuration
+const requestOptions = {
+  method: 'POST',
+  headers: headers,
+  data: data,
+  url: '/api/user/login',
+  // redirect: 'follow', (Not necessary as Axios automatically follows redirects)
+};
 
-        toast.success("Thanks for Choosing us!", { id });
+// Send the POST request using Axios
+axios(requestOptions)
+  .then(result => {
+    console.log(result.data);
 
-        //  Reset the form
-        resetForm();
-      })
-      .catch((error) => {
-        toast.error(error.message, { id });
-        console.log(error);
-      });
+    const {message}= result.data;
+
+
+    
+    
+    
+    // setUserCookie('user', result.data, { path: '/login' });
+    
+    
+    localStorage.setItem("token",JSON.stringify(result.data.token))
+    localStorage.setItem("user",JSON.stringify(result.data.user))
+    
+    
+    router.push('/')
+    
+    
+    // Reset the form
+    resetForm();
+    toast.success(message, { id });
+  })
+  .catch(error => {
+    toast.error("error", { id });
+    console.log(error);
+  });
+
 
     setSubmitting(false);
   };
@@ -68,6 +105,11 @@ const Login: React.FC<Props> = ({}) => {
     validationSchema,
     onSubmit,
   });
+
+  useEffect(()=>{
+
+    console.log("component is rerendering");
+  })
 
   return (
     <>

@@ -3,6 +3,12 @@ import whatsAppSend from "../utility/whatsApp";
 import EmailRead from "../utility/emailReadUtility";
 import ChatGpt from "../utility/chatGpt";
 
+import { connectToMongo } from "@/services/utility/db";
+import User from "@/models/user";
+import fetchGoogleEmails from "../utility/googleEmailRead";
+import mongoose from "mongoose";
+import refreshTokenGen from "../utility/refreshToken";
+
 type DataType = {
   status?: boolean;
   msg?: any[];
@@ -22,57 +28,106 @@ type DataType = {
       return string;
     }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<DataType>) {
+
+
+
+
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    //for sending Message
+ 
 
-    // whatsAppSend("Testing api")
+    //connection to db
 
-    const response:any = await EmailRead();
-
-    const { parsedEmails } = response;
+    await connectToMongo();
 
 
+    const allusr = await User.find({});
 
 
-    // const  chatgptAsnwer = await ChatGpt(parsedEmails[parsedEmails.length - 1], "find the important details");
+const email:any[] =[];
 
-    // console.log({ chatgptAsnwer });
-    // console.log(parsedEmails[parsedEmails.length - 1].TextBody);
-    // console.log({ response });
+//     // const filteredUsers = allusr.filter(user => user.authorization.hasOwnProperty('gAccesstoken'));
+    const filteredUsers = allusr.filter(user => user.authorization.gAccesstoken?.length>0);
 
-    const chatgptAsnwer =
-      await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",
-                "Event Date" and "Amount" in an object by sereated eventName,date and amount ${parsedEmails[parsedEmails.length - 1].TextBody}`);
-    // console.log({ chatgptAsnwer });
-    // console.log(typeof chatgptAsnwer );
+    filteredUsers.map(async element=>{
 
-    // const finalMessage = "Alert : "+chatgptAsnwer
-    const finalMessage = removeUnwanted(chatgptAsnwer)
+      const emails = await fetchGoogleEmails(element.authorization.gAccesstoken)
 
+      .catch(async(error)=>{
+
+          if(error?.message ==='Invalid Credentials'){
+         const gAccesstoken = await refreshTokenGen('1//0gu_Aazs72VdcCgYIARAAGBASNwF-L9IrUFXV7iuDm5ikJ8KwDywUrgokABNXOg3zQRO0x0JPadQdsBjLDO4lECv_fYVuaDj32L0')
 
 
+         const userAccesstokenupdated = await User.findOneAndUpdate(
+          { _id: element._id }, 
+          {
+            "authorization.gAccesstoken": gAccesstoken,
+          },
+          { new: true }
+        );
 
+        // console.log({userAccesstokenupdated});
+        }
+
+      
+
+
+
+        
+      })
+
+      // console.log({emails});
+
+
+      const alreadySended  = await User.findOne({
+        _id: element._id,
+        "lstmsgData.subject":emails?.subject
+      })
+
+      if(!alreadySended){
+
+        console.log("new msg found");
+
+              const user = await User.findOneAndUpdate(
+        { _id:  element._id }, 
+        {
+          "lstmsgData.subject": emails?.subject,
+          "lstmsgData.body": emails?.body,
     
-
-    console.log(finalMessage);
-    // console.log(typeof finalMessage);
-
-
-    // finalMessage && res.status(200).json({ message: "This is a GET request", emailResponse: finalMessage });
-    // const FinalMessge = {
-    //   Reminder: chatgptAsnwer,
-    // };
+        },
+        { new: true }
+      );
 
 
-    finalMessage &&
-      whatsAppSend(finalMessage).then((response) => {
+      
 
-        console.log(response);
-        res.status(200).json({ message: "Chat gpt Answer sended" + finalMessage });
-      });
+      const chatgptAsnwer =
+   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
 
-    // response && res.status(200).json({ message: "This is a GET request", emailResponse: response });
+   const finalMessage = removeUnwanted(chatgptAsnwer)
+  finalMessage &&
+   whatsAppSend(finalMessage,element.mobile)
+
+
+
+
+      }
+
+
+    })
+
+
+    res.json({
+      filteredUsers:filteredUsers.map(e=>e.name),
+      // allusr,
+      // email
+    })
+
+
+
+
   } else if (req.method === "POST") {
    
   } else {

@@ -13,6 +13,13 @@ const userSchema = new Schema(
 
       
     },
+    lstmsgData:{
+      subject: { type: String },
+      body: { type: String },
+     
+
+      
+    },
      mobile: {
       type: String,
       unique: true,

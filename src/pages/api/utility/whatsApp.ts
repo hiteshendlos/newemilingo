@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export default async function whatsAppSend(body: any) {
+export default async function whatsAppSend(body: any,mobile:any) {
   try {
 
     
@@ -10,9 +10,10 @@ export default async function whatsAppSend(body: any) {
 // const senderNumber:string|undefined = process.env.WHATSAPP_SENDER_NUMBER;
 const  apiurl=" https://api.ultramsg.com/instance50525/messages/chat"
 const token = '6ey15b6bsr0oeegq';
-const senderNumber = "8740093482";
+// const senderNumber = "8740093482";
+const senderNumber = mobile;
 
-    console.log({body});
+    // console.log({body});
 const data = new URLSearchParams();
 data.append("token", token);
 data.append("to", senderNumber);
@@ -28,24 +29,20 @@ const config = {
 };
 
 const response = axios(config)
-  .then((response) => {
+  .then((response:any) => {
     
     console.log(response.data)
     
 
     return response
     })
-  .catch((error) => console.log("error", error));
+  .catch((error:any) => console.log("error", error));
 
   return response;  
 
-    // const answer = response.data.choices[0].message.content;
-
-    // return answer;
-
+ 
   } catch (error) {
     console.error("Error:", error);
   }
 
-  //   return data;
 }
