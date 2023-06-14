@@ -1,6 +1,6 @@
-import GoogleSignIN from "@/components/core/auth/googlesignin/GoogleSignIN";
-import Header from "@/components/layout/header";
-import WhatpsApp from "@/components/whatsapp";
+import GoogleSignIN from "../components/Core/auth/googlesignin/GoogleSignIN"
+import Header from "../components/layout/header";
+import WhatpsApp from "../components/whatsapp";
 import { useEffect, useState } from "react";
 
 import { Toaster } from "react-hot-toast";
