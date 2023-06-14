@@ -35,6 +35,10 @@ type DataType = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
+
+
+
+    let  whatsStatus:any ;
  
 
     //connection to db
@@ -50,7 +54,8 @@ const email:any[] =[];
 //     // const filteredUsers = allusr.filter(user => user.authorization.hasOwnProperty('gAccesstoken'));
     const filteredUsers = allusr.filter(user => user.authorization.gAccesstoken?.length>0);
 
-    filteredUsers.map(async element=>{
+   
+   Promise.all( filteredUsers.map(async element=>{
 
       const emails = await fetchGoogleEmails(element.authorization.gAccesstoken)
 
@@ -90,19 +95,7 @@ const email:any[] =[];
 
         console.log("new msg found");
 
-      //         const user = await User.findOneAndUpdate(
-      //   { _id:  element._id }, 
-      //   {
-      //     "lstmsgData.subject": emails?.subject,
-      //     "lstmsgData.body": emails?.body,
-    
-      //   },
-      //   { new: true }
-      // );
-
-
-      
-
+   
       const chatgptAsnwer =
    await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
 
@@ -113,6 +106,8 @@ const email:any[] =[];
 
     console.log({wstatus:wstatus.data});
 
+
+    whatsStatus=wstatus.data
 
    
 
@@ -140,13 +135,22 @@ const email:any[] =[];
 
 
     })
+)
+
+.then(()=>{
+
+console.log({whatsStatus});
+
+})
 
 
-    res.json({
-      filteredUsers:filteredUsers.map(e=>e.name),
-      // allusr,
-      // email
-    })
+res.json({
+  filteredUsers:filteredUsers.map(e=>e.name),
+  whatsStatus20:whatsStatus
+  // allusr,
+  // email
+})
+
 
 
 
