@@ -90,7 +90,37 @@ const email:any[] =[];
 
         console.log("new msg found");
 
-              const user = await User.findOneAndUpdate(
+      //         const user = await User.findOneAndUpdate(
+      //   { _id:  element._id }, 
+      //   {
+      //     "lstmsgData.subject": emails?.subject,
+      //     "lstmsgData.body": emails?.body,
+    
+      //   },
+      //   { new: true }
+      // );
+
+
+      
+
+      const chatgptAsnwer =
+   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
+
+   const finalMessage = removeUnwanted(chatgptAsnwer)
+
+   if(finalMessage&& finalMessage.length>0){
+    const wstatus = await whatsAppSend(finalMessage,element.mobile)
+
+    console.log({wstatus:wstatus.data});
+
+
+   
+
+
+
+    if( wstatus.data.sent){
+
+         const user = await User.findOneAndUpdate(
         { _id:  element._id }, 
         {
           "lstmsgData.subject": emails?.subject,
@@ -101,15 +131,8 @@ const email:any[] =[];
       );
 
 
-      
-
-      const chatgptAsnwer =
-   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
-
-   const finalMessage = removeUnwanted(chatgptAsnwer)
-  finalMessage &&
-   whatsAppSend(finalMessage,element.mobile)
-
+    }
+   }
 
 
 

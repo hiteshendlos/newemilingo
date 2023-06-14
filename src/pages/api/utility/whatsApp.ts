@@ -8,8 +8,8 @@ export default async function whatsAppSend(body: any,mobile:any) {
 // const apiUrl = process.env.UTLTRAMSG_API_URL;
 // const ultramsg_token = process.env.UTLTRAMSG_TOKEN;
 // const senderNumber:string|undefined = process.env.WHATSAPP_SENDER_NUMBER;
-const  apiurl=" https://api.ultramsg.com/instance50525/messages/chat"
-const token = '6ey15b6bsr0oeegq';
+const  apiurl=" https://api.ultramsg.com/instance50797/messages/chat"
+const token = 'naooj7k9rul267wn';
 // const senderNumber = "8740093482";
 const senderNumber = mobile;
 
