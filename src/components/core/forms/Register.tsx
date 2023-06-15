@@ -30,9 +30,14 @@ const Register: React.FC<Props> = ({}) => {
     email: Yup.string().email("Invalid email address").required("Email is Required"),
     password: Yup.string().required("Password is Required"),
 
- mobile:Yup.string().matches(/^(\+1)?\d{10}$/, "Please enter a valid mobile number")
-  .required("Mobile number is required")
+ mobile:Yup.string()
+ .matches(/^\+?[\d-]+$/, "Please enter a valid mobile number")
+//  .matches(/^\+?[1-9]\d{1,14}$/, "Please enter a valid mobile number")
+ .required("Mobile number is required")
   });
+//  mobile:Yup.string().matches(/^(\+1)?\$/, "Please enter a valid mobile number")
+//   .required("Mobile number is required")
+//   });
 
   const onSubmit = async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
 
@@ -42,6 +47,10 @@ const Register: React.FC<Props> = ({}) => {
     
  
     let id = toast.loading("Loading...");
+
+
+
+    // values.mobaile.str.replace(/ /g, '');
 
 
     var raw = JSON.stringify(values);
