@@ -1,12 +1,15 @@
 import axios from "axios";
 
-const OPENAI_API_KEY = "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";
-
-export default async function ChatGpt(query: any) {
+import config from '../../../services/config'
+const OPENAI_API_KEY = config.openAiApiKey;
+export default async function ChatGpt(query:any) {
 
 
     
   try {
+
+
+    
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -19,21 +22,24 @@ export default async function ChatGpt(query: any) {
           'Content-Type': 'application/json'
         }
       }
-    );
+    ).catch((error)=>{
+        throw new Error(error.response.data.error.message)
+      
+        })
 
 
     const answer = response.data.choices[0].message.content;
+
+    console.log(answer);
 
 
     return answer;
    
   } catch (error) {
-    console.error('Error:', error);
- 
+    console.error('Error in Chat gpt:', error);
+
+    // throw new Error(error)
+
 }
-
-
-//   return data;
 }
-
 

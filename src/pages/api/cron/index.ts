@@ -20,10 +20,10 @@ type DataType = {
 
     function removeUnwanted(string:string) {
       // Remove curly brackets
-      string = string.replace(/{|}/g, "");
+      string = string?.replace(/{|}/g, "");
 
       // Remove white spaces (excluding new lines)
-      string = string.replace(/(?<!)\s/g, "");
+      string = string?.replace(/(?<!)\s/g, "");
 
       return string;
     }
@@ -55,7 +55,7 @@ const email:any[] =[];
     const filteredUsers = allusr.filter(user => user.authorization.gAccesstoken?.length>0);
 
    
-   Promise.all( filteredUsers.map(async element=>{
+  await Promise.all( filteredUsers.map(async element=>{
 
       const emails = await fetchGoogleEmails(element.authorization.gAccesstoken)
 
@@ -95,8 +95,12 @@ const email:any[] =[];
 
         console.log("new msg found");
 
+        console.log("body", emails?.body);
+        console.log("subject", emails?.subject);
+        console.log("length",typeof emails?.subject);
+
    
-      const chatgptAsnwer =
+         const chatgptAsnwer =
    await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
 
    const finalMessage = removeUnwanted(chatgptAsnwer)
@@ -139,14 +143,14 @@ const email:any[] =[];
 
 .then(()=>{
 
-console.log({whatsStatus});
+// console.log({whatsStatus});
 
 })
 
 
 res.json({
   filteredUsers:filteredUsers.map(e=>e.name),
-  whatsStatus20:whatsStatus
+  wStatus:whatsStatus
   // allusr,
   // email
 })

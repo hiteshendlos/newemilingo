@@ -1,4 +1,5 @@
-import Register from "../../../../components/Core/forms/Register";
+// import Register from "../../../../components/Core/forms/Register";
+import Register from "../../../Core/forms/Register";
 
 const HomeHero = () => {
   
