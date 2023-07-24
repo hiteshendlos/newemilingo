@@ -113,7 +113,7 @@ toast.success("logout Successfully")
                   <GiHamburgerMenu />
                 </span> */}
               </div>:<div className="flex items-center gap-4 md:ml-7">
-                <Link href="/register" className=" text-btn2 font-medium text-dodgerblue">
+                {/* <Link href="/register" className=" text-btn2 font-medium text-dodgerblue">
                   <button className={`myfontback cursor-pointer`} >
                     {" "}
                     Register
@@ -124,7 +124,7 @@ toast.success("logout Successfully")
                     {" "}
                     Login
                   </button>
-                </Link>
+                </Link> */}
 
                 <button className=" lg:hidden  cursor-pointer bg-transparent" onClick={toggleBurger}>
                   {/* <GiHamburgerMenus /> */}
