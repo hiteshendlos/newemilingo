@@ -107,6 +107,8 @@ const email:any[] =[];
 
    const finalMessage = removeUnwanted(chatgptAsnwer)
 
+   console.log({finalMessage})
+
    if(finalMessage&& finalMessage.length>0){
     const wstatus = await whatsAppSend(finalMessage,element.mobile)
 
