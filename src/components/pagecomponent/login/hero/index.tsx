@@ -1,7 +1,7 @@
 "use client"
 
-// import Login from "@/components/core/forms/Login";
-import Login from "../../../Core/forms/Login";
+import Login from "@/components/core/forms/Login";
+// import Login from "../../../Core/forms/Login";
 
 const LoginHero = () => {
 

@@ -8,6 +8,8 @@ const  apiurl=config.ultrMsgApi
 const token:string = config.ultrMsgToken ?? '';
 const senderNumber = mobile;
 
+console.log(apiurl,token,senderNumber)
+
 const data = new URLSearchParams();
 data.append("token", token);
 data.append("to", senderNumber);

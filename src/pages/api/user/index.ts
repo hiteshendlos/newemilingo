@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import User from "@/models/user";
 import BcryptHelper from "@/services/helpers/Bcrypt";
+
 import { connectToMongo } from "@/services/utility/db";
 
 type DataType = {

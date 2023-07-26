@@ -1,6 +1,6 @@
 
 
-import Header from "../components/layout/header";
+import Header from "../components/Layout/header";
 import LoginHero from "../components/pagecomponent/login/hero";
 
 

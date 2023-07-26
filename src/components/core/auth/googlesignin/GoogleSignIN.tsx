@@ -176,8 +176,7 @@ const GoogleSignIN = (props: any) => {
     const config = {
       clientId: "846260142876-1ikkf0rpkviln05h2ncvng5buoa2ld9k.apps.googleusercontent.com",
       ClientSecret: "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",
-
-      // scopes: "openid email profile https://www.googleapis.com/auth/calendar",
+    // scopes: "openid email profile https://www.googleapis.com/auth/calendar",
       cookiePolicy: "single_host_origin",
       accessType: "offline",
       responseType: "code",
@@ -186,6 +185,8 @@ const GoogleSignIN = (props: any) => {
       flow: "implicit ",
     };
  
+
+
 
 
   return (

@@ -92,8 +92,9 @@ axios(requestOptions)
     toast.success(message, { id });
   })
   .catch(error => {
-    toast.error("error", { id });
-    console.log(error);
+
+    toast.error(error.response.data.error, { id });
+
   });
 
 

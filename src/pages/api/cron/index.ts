@@ -73,7 +73,7 @@ const email:any[] =[];
           { new: true }
         );
 
-        // console.log({userAccesstokenupdated});
+
         }
 
       
@@ -93,11 +93,13 @@ const email:any[] =[];
 
       if(!alreadySended){
 
-        console.log("new msg found");
+        // console.log("new msg found");
 
-        console.log("body", emails?.body);
-        console.log("subject", emails?.subject);
-        console.log("length",typeof emails?.subject);
+        // console.log("body", emails?.body);
+        // console.log("subject", emails?.subject);
+        // console.log("length",typeof emails?.subject);
+
+        
 
    
          const chatgptAsnwer =

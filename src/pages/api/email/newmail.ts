@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       imap.openBox("INBOX", true, callback);
     };
 
-    imap.once("ready", function () {
+   const ImapData =  imap.once("ready", function () {
       openInbox(async function (err: any, box: any) {
         if (err) {
           console.error(err);
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         // Set search criteria (optional)
         const searchCriteria = ["UNSEEN"];
 
-        imap.search(searchCriteria, function (err: any, results: any) {
+      return  imap.search(searchCriteria, function (err: any, results: any) {
           if (err) {
             console.error(err);
             res.status(200).json({ message: err });
@@ -64,27 +64,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                   // "HTML body": parsed.html,
                 };
 
+console.log({emailObject})
+
                 emailArray.push(emailObject);
 
                 // Check if all emails are parsed
                 if (emailArray.length === results.length) {
-                  //Finding the Due date and other things from email
-
-                  //  console.log(await ChatGpt(`Find due Amount And Due data in it ? ${emailArray[emailArray.length-1]?.TextBody}`));
-                  // const ChatGptResponse =
-                  //   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name", 
-                  // "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);
-
+              
                   
                   const ChatGptResponse =
                     await ChatGpt(`Can you details in given text event information in a object formet? bidercate it into "Event Name", 
                   "Event Date" and "Amount"?in an object called myevents ${emailArray[emailArray.length - 1]?.TextBody}`);
 
-                  // console.log(ChatGptResponse);
                   console.log(typeof ChatGptResponse);
 
 
-                  // const jsonString = JSON.stringify(ChatGptResponse);
+
 
                   const parseddd = JSON.parse(ChatGptResponse);
 
@@ -122,6 +117,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         });
       });
     });
+
+console.log({ImapData})
 
     imap.connect();
   } catch (error) {

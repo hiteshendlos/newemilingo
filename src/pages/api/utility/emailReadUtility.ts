@@ -17,6 +17,11 @@ function parseEmails() {
   return new Promise((resolve, reject) => {
     const unseenEmails = [];
 
+
+
+
+
+
     const imap = createImapConnection();
     imap.once("ready", () => {
       openInbox(imap, (err:any, box:any) => {
@@ -40,6 +45,8 @@ function parseEmails() {
           });
       });
     });
+
+
 
     imap.once("error", (err:any) => {
       console.error("IMAP error:", err);
@@ -156,3 +163,6 @@ export default async function EmailRead() {
     }
    
 }
+
+
+

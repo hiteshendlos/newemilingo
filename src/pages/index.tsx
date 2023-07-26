@@ -1,5 +1,6 @@
-import GoogleSignIN from "../components/Core/auth/googlesignin/GoogleSignIN"
-import Header from "../components/layout/header";
+import GoogleSignIN from "@/components/core/auth/googlesignin/GoogleSignIN"
+// import Header from @/components/layout/header";
+import Header from "@/components/Layout/header/index";
 import WhatpsApp from "../components/whatsapp";
 import { useEffect, useState } from "react";
 
@@ -11,14 +12,25 @@ export default function Home() {
   const router =useRouter()
 
   const [isRender,setRender]= useState(false)
+  const [isSetupDone,setSetup]= useState(false)
 
   useEffect(()=>{
     if (window){
-   
+
+      
       setRender(true)
-       
+      
       const user:any = localStorage.getItem("user")
+      const parsedUser = JSON.parse(user)
+
+      if(parsedUser?.authorization?.gAccesstoken &&parsedUser?.authorization?.gRfreshtoken)setSetup(true)
+      // // console.log({a:parsedUser.authorization.gAccesstoken &&parsedUser.authorization.gRfreshtoken})
       !user &&router.push('/login')
+
+    
+      
+
+
    }
    },[])
 
@@ -35,7 +47,15 @@ export default function Home() {
   
   
         <div className="h-screen  w-screen flex justify-center items-center">
-          <GoogleSignIN />
+    
+
+
+
+       {
+
+isSetupDone?<span className="bg-green-500 text-white py-5 px-5 border rounded-xl"> Congratulations You Have Done Setup </span>:      <GoogleSignIN />
+
+       }   
   
           {/* <WhatpsApp/> */}
   

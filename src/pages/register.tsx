@@ -1,4 +1,4 @@
-import Header from "../components/layout/header";
+import Header from "../components/Layout/header/index";
 import HomeHero from "../components/pagecomponent/home/hero";
 
 import toast, { Toaster } from 'react-hot-toast';
