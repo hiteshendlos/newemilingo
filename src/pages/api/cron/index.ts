@@ -62,16 +62,25 @@ const email:any[] =[];
       .catch(async(error)=>{
 
           if(error?.message ==='Invalid Credentials'){
-         const gAccesstoken = await refreshTokenGen('1//0gu_Aazs72VdcCgYIARAAGBASNwF-L9IrUFXV7iuDm5ikJ8KwDywUrgokABNXOg3zQRO0x0JPadQdsBjLDO4lECv_fYVuaDj32L0')
+
+            
+
+        //  const gAccesstoken = await refreshTokenGen('1//0gu_Aazs72VdcCgYIARAAGBASNwF-L9IrUFXV7iuDm5ikJ8KwDywUrgokABNXOg3zQRO0x0JPadQdsBjLDO4lECv_fYVuaDj32L0')
+
+         const gAccesstoken = await refreshTokenGen(element?.authorization?.gRfreshtoken)
+if(gAccesstoken){
 
 
-         const userAccesstokenupdated = await User.findOneAndUpdate(
-          { _id: element._id }, 
-          {
-            "authorization.gAccesstoken": gAccesstoken,
-          },
-          { new: true }
-        );
+  const userAccesstokenupdated = await User.findOneAndUpdate(
+   { _id: element._id }, 
+   {
+     "authorization.gAccesstoken": gAccesstoken,
+   },
+   { new: true }
+  );
+
+
+}
 
 
         }
@@ -103,7 +112,7 @@ const email:any[] =[];
 
    
          const chatgptAsnwer =
-   await ChatGpt(`Can you please provide important details for event or task for blocking the calendar event? bidercate it into "Event Name",${emails?.body}`);
+   await ChatGpt(`Can you please provide important details from the email such as sender name, subject, priority, important date and time, critical details or any important steps/process defined by the sender? bidercate it into "Event Name",${emails?.body}`);
 
    const finalMessage = removeUnwanted(chatgptAsnwer)
 
