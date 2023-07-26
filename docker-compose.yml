@@ -1,7 +1,7 @@
 version: "3"
 services:
-  endlos-email-OpenAi:
-    container_name: endlos-email-OpenAi
+  endlos-email-openai:
+    container_name: endlos-email-openai
     build:
       context: .
       dockerfile: ./dockerfile
