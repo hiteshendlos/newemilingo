@@ -102,49 +102,52 @@ if(gAccesstoken){
 
       if(!alreadySended){
 
-        // console.log("new msg found");
+        
 
-        // console.log("body", emails?.body);
-        // console.log("subject", emails?.subject);
-        // console.log("length",typeof emails?.subject);
 
+       if( emails?.body?.length !! >250){
+
+
+        const chatgptAsnwer =
+        await ChatGpt(`Can you please provide important details from the email such as sender name, subject, priority, important date and time, critical details or any important steps/process defined by the sender? bidercate it into "Event Name",${emails?.body}`);
+     
+        const finalMessage = removeUnwanted(chatgptAsnwer)
+     
+        if(finalMessage&& finalMessage.length>0){
+         const wstatus = await whatsAppSend(finalMessage,element.mobile)
+     
+         console.log({wstatus:wstatus.data});
+     
+     
+         whatsStatus=wstatus.data
+     
+        
+     
+     
+     
+         if( wstatus.data.sent){
+     
+              const user = await User.findOneAndUpdate(
+             { _id:  element._id }, 
+             {
+               "lstmsgData.subject": emails?.subject,
+               "lstmsgData.body": emails?.body,
+         
+             },
+             { new: true }
+           );
+     
+     
+         }
+        }
+
+
+
+       }
         
 
    
-         const chatgptAsnwer =
-   await ChatGpt(`Can you please provide important details from the email such as sender name, subject, priority, important date and time, critical details or any important steps/process defined by the sender? bidercate it into "Event Name",${emails?.body}`);
 
-   const finalMessage = removeUnwanted(chatgptAsnwer)
-
-   console.log({finalMessage})
-
-   if(finalMessage&& finalMessage.length>0){
-    const wstatus = await whatsAppSend(finalMessage,element.mobile)
-
-    console.log({wstatus:wstatus.data});
-
-
-    whatsStatus=wstatus.data
-
-   
-
-
-
-    if( wstatus.data.sent){
-
-         const user = await User.findOneAndUpdate(
-        { _id:  element._id }, 
-        {
-          "lstmsgData.subject": emails?.subject,
-          "lstmsgData.body": emails?.body,
-    
-        },
-        { new: true }
-      );
-
-
-    }
-   }
 
 
 
